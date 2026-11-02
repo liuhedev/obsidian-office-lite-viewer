@@ -52,4 +52,5 @@
 .office-view button.ov-sheet[aria-pressed="true"] { background: transparent; }
 
 .office-view .ov-json-text { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 12px 16px; border: 0; border-radius: 0; background: transparent; font-family: var(--font-monospace); font-size: var(--font-ui-small); line-height: 1.6; white-space: pre; tab-size: 2; user-select: text; }
+.office-view .ov-word-text { flex: 1; min-height: 0; overflow: auto; padding: 16px 20px; font-family: var(--font-text); font-size: var(--font-text-size); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
 .office-view .ov-json-text code { padding: 0; background: transparent; color: var(--text-normal); font: inherit; white-space: inherit; }

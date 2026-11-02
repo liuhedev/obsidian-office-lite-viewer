@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { doc, docx, isCompound, readCompound } from './word';
 import * as XLSX from 'xlsx';
 import { MAX_BYTES, MAX_CELLS, MAX_COLS, MAX_ROWS, MAX_SHEETS, type DocumentData, type ParseOptions, type ParseReply, type Sheet } from './model';
 
@@ -35,8 +36,23 @@ function csv(bytes: Uint8Array, options: ParseOptions): DocumentData {
     details: `${label.toUpperCase()} · ${result.meta.delimiter === '\t' ? 'Tab' : result.meta.delimiter || ','} delimiter`, warnings: [] };
 }
 
-function xlsx(bytes: Uint8Array): DocumentData {
-  if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('This is not an XLSX workbook. Re-export it as .xlsx and try again.');
+function spreadsheet(bytes: Uint8Array, extension: string): DocumentData {
+  if (extension === 'xls') {
+    if (!isCompound(bytes)) throw new Error('Not an Excel 97–2003 binary XLS workbook. Re-export it as .xls or .xlsx.');
+    const compound = readCompound(bytes);
+    const entry = XLSX.CFB.find(compound, '/Workbook') ?? XLSX.CFB.find(compound, '/Book');
+    if (!entry?.content) throw new Error('Invalid XLS: missing workbook stream.');
+    const content = new Uint8Array(entry.content);
+    const view = new DataView(content.buffer, content.byteOffset, content.byteLength);
+    if (content.length < 8 || view.getUint16(0, true) !== 0x809 || view.getUint16(4, true) !== 0x600) throw new Error('Only Excel 97–2003 (BIFF8) XLS is supported.');
+    for (let pos = 0; pos + 4 <= content.length;) {
+      const record = view.getUint16(pos, true);
+      const size = view.getUint16(pos + 2, true);
+      if (record === 0x2f) throw new Error('Encrypted XLS workbooks are not supported.');
+      pos += 4 + size;
+      if (pos > content.length) throw new Error('Truncated XLS workbook record.');
+    }
+  } else if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('Not an XLSX workbook; encrypted workbooks are not supported.');
   const workbook = XLSX.read(bytes, { type: 'array', dense: true, sheetRows: MAX_ROWS, cellHTML: false, cellFormula: true, cellStyles: false, bookVBA: false });
   let budget = MAX_CELLS;
   const sheets: Sheet[] = [];
@@ -67,7 +83,7 @@ function xlsx(bytes: Uint8Array): DocumentData {
     budget -= rows.length * columns;
     sheets.push({ name, rows, columns, warnings: notes });
   }
-  return { sheets, details: 'XLSX · Cached values; formulas are not recalculated', warnings };
+  return { sheets, details: `${extension.toUpperCase()} · Cached values; formulas are not recalculated`, warnings };
 }
 
 function json(bytes: Uint8Array): DocumentData {
@@ -106,7 +122,15 @@ self.onmessage = (event: MessageEvent<{ buffer: ArrayBuffer; extension: string; 
     const { buffer, extension, options } = event.data;
     if (buffer.byteLength > MAX_BYTES) throw new Error('File exceeds the 20 MiB preview limit.');
     const bytes = new Uint8Array(buffer);
-    const data = extension === 'json' ? json(bytes) : extension === 'csv' ? csv(bytes, options) : xlsx(bytes);
+    let data: DocumentData;
+    switch (extension) {
+      case 'json': data = json(bytes); break;
+      case 'csv': data = csv(bytes, options); break;
+      case 'xls': case 'xlsx': data = spreadsheet(bytes, extension); break;
+      case 'doc': data = doc(bytes); break;
+      case 'docx': data = docx(bytes); break;
+      default: throw new Error('Unsupported file extension.');
+    }
     reply = { ok: true, data };
   } catch (error) { reply = { ok: false, error: error instanceof Error ? error.message : 'Unable to read this file.' }; }
   self.postMessage(reply);

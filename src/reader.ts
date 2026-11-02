@@ -15,7 +15,7 @@ export class DocumentReader {
       catch (error) { URL.revokeObjectURL(url); reject(error); return; }
       URL.revokeObjectURL(url);
       const finish = () => { clearTimeout(timer); worker.terminate(); this.cancel = undefined; };
-      const timer = setTimeout(() => { finish(); reject(new Error('Preview timed out after 15 seconds. Try a smaller workbook.')); }, 15_000);
+      const timer = setTimeout(() => { finish(); reject(new Error('Preview timed out after 15 seconds. Try a smaller document.')); }, 15_000);
       this.cancel = () => { finish(); reject(new DOMException('Preview cancelled', 'AbortError')); };
       worker.onmessage = (event: MessageEvent<ParseReply>) => {
         finish();
