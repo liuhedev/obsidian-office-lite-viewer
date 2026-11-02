@@ -72,26 +72,32 @@ function xlsx(bytes: Uint8Array): DocumentData {
 
 function json(bytes: Uint8Array): DocumentData {
   const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes).replace(/^\uFEFF/, '');
-  let value: unknown;
-  try { value = JSON.parse(text); } catch { throw new Error('Invalid JSON. Check syntax (JSON comments and trailing commas are not supported).'); }
-  const sheets: Sheet[] = [];
-  if (Array.isArray(value) && value.length && value.every(item => item !== null && typeof item === 'object' && !Array.isArray(item))) {
-    const keys: string[] = []; const seen = new Set<string>();
-    let truncated = value.length >= MAX_ROWS;
-    for (const item of value.slice(0, MAX_ROWS - 1)) for (const key of Object.keys(item)) {
-      if (!seen.has(key)) { if (keys.length >= MAX_COLS) { truncated = true; continue; } seen.add(key); keys.push(key); }
-    }
-    const limit = Math.min(MAX_ROWS - 1, Math.floor(MAX_CELLS / Math.max(1, keys.length)) - 1);
-    if (value.length > limit) truncated = true;
-    const rows = [keys, ...value.slice(0, limit).map(item => keys.map(key => {
-      if (!Object.prototype.hasOwnProperty.call(item, key)) return '';
-      const cell = item[key];
-      if (typeof cell === 'string') return cell;
-      try { return JSON.stringify(cell); } catch { return '[Nested value too deep for table; use Tree]'; }
-    }))];
-    sheets.push({ name: 'JSON', rows, columns: keys.length, warnings: truncated ? ['Table preview truncated by row, column or cell limits. Use Tree to inspect other data.'] : [] });
-  }
-  return { kind: 'json', json: value, sheets, details: 'JSON · UTF-8 · Numbers use JavaScript precision', warnings: [] };
+  try { JSON.parse(text); } catch { throw new Error('Invalid JSON. Check syntax (JSON comments and trailing commas are not supported).'); }
+  // Format original tokens so numeric identifiers and escape sequences stay intact.
+  const tokens = text.match(/"(?:\\[\s\S]|[^"\\])*"|[{}\[\],:]|[^\s{}\[\],:]+/g) ?? [];
+  const parts: string[] = [];
+  let depth = 0; let size = 0;
+  const append = (part: string) => {
+    size += part.length;
+    if (size > MAX_BYTES * 2) throw new Error('Formatted JSON exceeds the 40 MiB display limit.');
+    parts.push(part);
+  };
+  const newline = () => append('\n' + '  '.repeat(Math.min(depth, 40)));
+  tokens.forEach((token, index) => {
+    if (token === '{' || token === '[') {
+      append(token); depth++;
+      const next = tokens[index + 1];
+      if (next !== '}' && next !== ']') newline();
+    } else if (token === '}' || token === ']') {
+      depth--;
+      const previous = tokens[index - 1];
+      if (previous !== '{' && previous !== '[') newline();
+      append(token);
+    } else if (token === ',') { append(token); newline(); }
+    else if (token === ':') append(': ');
+    else append(token);
+  });
+  return { kind: 'json', json: parts.join(''), sheets: [], details: 'JSON · UTF-8', warnings: [] };
 }
 
 self.onmessage = (event: MessageEvent<{ buffer: ArrayBuffer; extension: string; options: ParseOptions }>) => {
