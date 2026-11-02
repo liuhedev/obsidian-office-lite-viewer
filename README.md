@@ -11,7 +11,7 @@ Preview **CSV, XLS/XLSX, DOC/DOCX and JSON** in Obsidian. Read-only, local, no n
 
 ## Install
 
-Not yet listed in Community Plugins. Download the ZIP from [Releases](https://github.com/liuhedev/obsidian-office-view/releases), extract `office-view/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office Lite Viewer**. If another plugin handles the extension, use the file menu to open it.
+Not yet listed in Community Plugins. Download the ZIP from [Releases](https://github.com/liuhedev/obsidian-office-view/releases), extract `office-lite-viewer/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office Lite Viewer**. If another plugin handles the extension, use the file menu to open it.
 
 ## Embed
 
@@ -34,3 +34,5 @@ data/budget.xlsx
 Node.js 22+: `npm ci` → `npm run build` → `npm run package`.
 
 [Contributing](CONTRIBUTING.md) · [MIT](LICENSE) · [Third-party licenses](THIRD_PARTY_NOTICES.md)
+
+Upgrading from `office-view`: disable the old plugin and replace its folder with `office-lite-viewer/`, then enable Office Lite Viewer. Existing `office-view` embeds remain supported.

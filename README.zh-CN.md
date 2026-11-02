@@ -11,7 +11,7 @@
 
 ## 安装
 
-尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-view/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office Lite Viewer**。扩展名被其他插件接管时，可通过右键菜单打开。
+尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-lite-viewer/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office Lite Viewer**。扩展名被其他插件接管时，可通过右键菜单打开。
 
 ## 笔记内嵌
 
@@ -34,3 +34,5 @@ data/budget.xlsx
 Node.js 22+：`npm ci` → `npm run build` → `npm run package`。
 
 [参与开发](CONTRIBUTING.md) · [MIT 协议](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md)
+
+从 `office-view` 升级：停用旧插件，将旧目录替换为 `office-lite-viewer/`，再启用 Office Lite Viewer。已有 `office-view` 嵌入仍可使用。
