@@ -1,8 +1,8 @@
+[English](README.md) · 中文
+
 # Office View
 
 在 Obsidian 中预览 **CSV、XLSX、JSON**。只读、本地解析、不发网络请求。
-
-[English](README.md) · [下载](https://github.com/liuhedev/obsidian-office-view/releases)
 
 - **CSV / XLSX**： 搜索、排序、分页、工作表切换；CSV 支持 UTF-8、UTF-16、GBK。
 - **JSON**： 格式化文本，可选中复制，保留原始数字与字符串转义。
@@ -10,7 +10,7 @@
 
 ## 安装
 
-尚未上架社区市场。在 Releases 下载 ZIP，把 `office-view/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office View**。扩展名被其他插件接管时，可通过右键菜单打开。
+尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-view/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office View**。扩展名被其他插件接管时，可通过右键菜单打开。
 
 ## 笔记内嵌
 

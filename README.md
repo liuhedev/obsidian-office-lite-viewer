@@ -1,8 +1,8 @@
+English · [中文](README.zh-CN.md)
+
 # Office View
 
 Preview **CSV, XLSX and JSON** in Obsidian. Read-only, local, no network requests.
-
-[中文](README.zh-CN.md) · [Download](https://github.com/liuhedev/obsidian-office-view/releases)
 
 - **CSV / XLSX:** search, sort, pagination and worksheet tabs. CSV supports UTF-8, UTF-16 and GBK.
 - **JSON:** formatted, selectable text; original numbers and string escapes are preserved.
@@ -10,7 +10,7 @@ Preview **CSV, XLSX and JSON** in Obsidian. Read-only, local, no network request
 
 ## Install
 
-Not yet listed in Community Plugins. Download the ZIP from Releases, extract `office-view/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office View**. If another plugin handles the extension, use the file menu to open it.
+Not yet listed in Community Plugins. Download the ZIP from [Releases](https://github.com/liuhedev/obsidian-office-view/releases), extract `office-view/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office View**. If another plugin handles the extension, use the file menu to open it.
 
 ## Embed
 
