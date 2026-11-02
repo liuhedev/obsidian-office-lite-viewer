@@ -2,13 +2,14 @@ import { Component, FileView, FuzzySuggestModal, MarkdownRenderChild, Notice, Pl
 import { MAX_BYTES, type Encoding, type ParseOptions } from './model';
 import { DocumentReader } from './reader';
 import { SpreadsheetGrid } from './grid';
+import { JsonPreview } from './json-view';
 
 const VIEW_TYPE = 'office-view';
-const supported = (file: TFile) => ['csv', 'xlsx'].includes(file.extension.toLowerCase());
+const supported = (file: TFile) => ['csv', 'xlsx', 'json'].includes(file.extension.toLowerCase());
 
 class Preview extends Component {
   private reader = new DocumentReader();
-  private grid?: SpreadsheetGrid;
+  private grid?: SpreadsheetGrid | JsonPreview;
   private generation = 0;
   private options: ParseOptions = { encoding: 'auto', delimiter: '' };
   private gridHost!: HTMLElement;
@@ -50,7 +51,7 @@ class Preview extends Component {
       const data = await this.reader.parse(buffer, this.file.extension.toLowerCase(), this.options);
       if (generation !== this.generation) return;
       this.details.textContent = data.details;
-      this.grid = new SpreadsheetGrid(this.gridHost, data, this.controls);
+      this.grid = data.kind === 'json' ? new JsonPreview(this.gridHost, data) : new SpreadsheetGrid(this.gridHost, data, this.controls);
     } catch (error) {
       if (generation !== this.generation) return;
       this.gridHost.replaceChildren();
@@ -64,7 +65,7 @@ class OfficeFileView extends FileView {
   private preview?: Preview;
   getViewType(): string { return VIEW_TYPE; }
   getIcon(): string { return 'sheet'; }
-  canAcceptExtension(extension: string): boolean { return ['csv', 'xlsx'].includes(extension.toLowerCase()); }
+  canAcceptExtension(extension: string): boolean { return ['csv', 'xlsx', 'json'].includes(extension.toLowerCase()); }
   async onLoadFile(file: TFile): Promise<void> {
     if (this.preview) this.removeChild(this.preview);
     this.preview = new Preview(this.app, this.contentEl, file); this.addChild(this.preview);
@@ -73,7 +74,7 @@ class OfficeFileView extends FileView {
 }
 
 class OfficePicker extends FuzzySuggestModal<TFile> {
-  constructor(app: App, private openFile: (file: TFile) => void) { super(app); this.setPlaceholder('Open a CSV or XLSX file…'); }
+  constructor(app: App, private openFile: (file: TFile) => void) { super(app); this.setPlaceholder('Open a CSV, XLSX or JSON file…'); }
   getItems(): TFile[] { return this.app.vault.getFiles().filter(supported); }
   getItemText(file: TFile): string { return file.path; }
   onChooseItem(file: TFile): void { this.openFile(file); }
@@ -83,12 +84,12 @@ export default class OfficeViewPlugin extends Plugin {
   onunload(): void { this.app.workspace.detachLeavesOfType(VIEW_TYPE); }
   async onload(): Promise<void> {
     this.registerView(VIEW_TYPE, (leaf: WorkspaceLeaf) => new OfficeFileView(leaf));
-    for (const extension of ['csv', 'xlsx']) {
+    for (const extension of ['csv', 'xlsx', 'json']) {
       try { this.registerExtensions([extension], VIEW_TYPE); }
       catch { new Notice(`Office View: another plugin handles .${extension}. Use “Open spreadsheet” or the file menu.`); }
     }
     const open = (file: TFile) => { void this.app.workspace.getLeaf('tab').setViewState({ type: VIEW_TYPE, state: { file: file.path }, active: true }); };
-    this.addCommand({ id: 'open-spreadsheet', name: 'Open spreadsheet', callback: () => new OfficePicker(this.app, open).open() });
+    this.addCommand({ id: 'open-spreadsheet', name: 'Open document', callback: () => new OfficePicker(this.app, open).open() });
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file) => {
       if (file instanceof TFile && supported(file)) menu.addItem(item => item.setTitle('Open in Office View').setIcon('sheet').onClick(() => open(file)));
     }));
@@ -97,7 +98,7 @@ export default class OfficeViewPlugin extends Plugin {
       const file = this.app.metadataCache.getFirstLinkpathDest(path, context.sourcePath)
         ?? this.app.vault.getAbstractFileByPath(normalizePath(path));
       if (!(file instanceof TFile) || !supported(file)) {
-        host.createEl('p', { text: 'Office View: enter the path to an existing CSV or XLSX file.' }); return;
+        host.createEl('p', { text: 'Office View: enter the path to an existing CSV, XLSX or JSON file.' }); return;
       }
       const child = new MarkdownRenderChild(host);
       child.addChild(new Preview(this.app, host, file)); context.addChild(child);

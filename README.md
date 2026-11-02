@@ -1,8 +1,8 @@
 # Office View for Obsidian
 
-Open a spreadsheet without leaving your notes. Office View previews **CSV and XLSX** files directly in Obsidian, using your vault's theme. All parsing happens on your device; the plugin makes no network requests and never writes to source documents.
+Open a spreadsheet without leaving your notes. Office View previews **CSV, XLSX and JSON** files directly in Obsidian, using your vault's theme. All parsing happens on your device; the plugin makes no network requests and never writes to source documents.
 
-**Status:** 0.1.1, an early read-only release. Not yet listed in Obsidian's Community Plugins directory.
+**Status:** 0.2.0, an early read-only release. Not yet listed in Obsidian's Community Plugins directory.
 
 [中文说明](README.zh-CN.md)
 
@@ -69,3 +69,9 @@ CSV parsing uses Papa Parse. XLSX parsing uses SheetJS Community Edition from it
 MIT — see [LICENSE](LICENSE). This project is independent of Obsidian and Microsoft Office.
 
 Preview controls stay compact: encoding, delimiter, reload and parsing details are under the file menu (⋯); the first-row header toggle is in the same menu. Single-sheet tabs and single-page navigation are hidden.
+
+### JSON
+
+Open `.json` files directly, from the file menu, or with the Office View command. The default view is a collapsible tree. Arrays of objects also offer a Tree / Table switch, with search and sorting in Table mode. JSON embeds use the same `office-view` block.
+
+JSON is read-only and accepts UTF-8 (including BOM), standard JSON syntax only. Tree children load in batches of 100, with a display cap of 10,000 nodes and 64 levels; collapsed branches are loaded when expanded. Table mode follows the spreadsheet preview limits, includes keys found in loaded records, leaves missing fields blank, and displays nested values as JSON text. Numbers use JavaScript precision; large numeric identifiers should be strings. No editing or saving is included.

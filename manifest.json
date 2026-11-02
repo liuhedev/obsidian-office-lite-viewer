@@ -1,9 +1,9 @@
 {
   "id": "office-view",
   "name": "Office View",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "minAppVersion": "1.5.0",
-  "description": "Preview CSV and XLSX files locally, with search, sorting and sheet tabs.",
+  "description": "Preview CSV, XLSX and JSON files locally, with tables and collapsible JSON trees.",
   "author": "liuhedev",
   "authorUrl": "https://github.com/liuhedev",
   "isDesktopOnly": false

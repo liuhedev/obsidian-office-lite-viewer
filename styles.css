@@ -50,3 +50,12 @@
 .ov-sheets { padding: 0 8px; background: transparent; }
 .office-view button.ov-sheet { border-radius: 0; background: transparent; }
 .office-view button.ov-sheet[aria-pressed="true"] { background: transparent; }
+
+.ov-json-toolbar { padding: 6px 12px; }
+.ov-json-toolbar[hidden] { display: none; }
+.ov-json-body { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: auto; padding: 8px 12px; font-family: var(--font-monospace); }
+.ov-json-children { padding-left: 20px; border-left: 1px solid var(--ov-line); }
+.office-view .ov-json-node > summary { list-style: disclosure-closed; font: inherit; line-height: 1.7; padding: 0 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.office-view .ov-json-node[open] > summary { list-style: disclosure-open; }
+.ov-json-value { padding: 2px 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ov-json-value code { color: var(--text-accent); font: inherit; background: transparent; }

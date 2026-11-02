@@ -70,13 +70,37 @@ function xlsx(bytes: Uint8Array): DocumentData {
   return { sheets, details: 'XLSX · Cached values; formulas are not recalculated', warnings };
 }
 
+function json(bytes: Uint8Array): DocumentData {
+  const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes).replace(/^\uFEFF/, '');
+  let value: unknown;
+  try { value = JSON.parse(text); } catch { throw new Error('Invalid JSON. Check syntax (JSON comments and trailing commas are not supported).'); }
+  const sheets: Sheet[] = [];
+  if (Array.isArray(value) && value.length && value.every(item => item !== null && typeof item === 'object' && !Array.isArray(item))) {
+    const keys: string[] = []; const seen = new Set<string>();
+    let truncated = value.length >= MAX_ROWS;
+    for (const item of value.slice(0, MAX_ROWS - 1)) for (const key of Object.keys(item)) {
+      if (!seen.has(key)) { if (keys.length >= MAX_COLS) { truncated = true; continue; } seen.add(key); keys.push(key); }
+    }
+    const limit = Math.min(MAX_ROWS - 1, Math.floor(MAX_CELLS / Math.max(1, keys.length)) - 1);
+    if (value.length > limit) truncated = true;
+    const rows = [keys, ...value.slice(0, limit).map(item => keys.map(key => {
+      if (!Object.prototype.hasOwnProperty.call(item, key)) return '';
+      const cell = item[key];
+      if (typeof cell === 'string') return cell;
+      try { return JSON.stringify(cell); } catch { return '[Nested value too deep for table; use Tree]'; }
+    }))];
+    sheets.push({ name: 'JSON', rows, columns: keys.length, warnings: truncated ? ['Table preview truncated by row, column or cell limits. Use Tree to inspect other data.'] : [] });
+  }
+  return { kind: 'json', json: value, sheets, details: 'JSON · UTF-8 · Numbers use JavaScript precision', warnings: [] };
+}
+
 self.onmessage = (event: MessageEvent<{ buffer: ArrayBuffer; extension: string; options: ParseOptions }>) => {
   let reply: ParseReply;
   try {
     const { buffer, extension, options } = event.data;
     if (buffer.byteLength > MAX_BYTES) throw new Error('File exceeds the 20 MiB preview limit.');
     const bytes = new Uint8Array(buffer);
-    const data = extension === 'csv' ? csv(bytes, options) : xlsx(bytes);
+    const data = extension === 'json' ? json(bytes) : extension === 'csv' ? csv(bytes, options) : xlsx(bytes);
     reply = { ok: true, data };
   } catch (error) { reply = { ok: false, error: error instanceof Error ? error.message : 'Unable to read this file.' }; }
   self.postMessage(reply);
