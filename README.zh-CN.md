@@ -4,8 +4,8 @@
 
 [English](README.md) · [下载](https://github.com/liuhedev/obsidian-office-view/releases)
 
-- **CSV / XLSX：**搜索、排序、分页、工作表切换；CSV 支持 UTF-8、UTF-16、GBK。
-- **JSON：**格式化文本，可选中复制，保留原始数字与字符串转义。
+- **CSV / XLSX**： 搜索、排序、分页、工作表切换；CSV 支持 UTF-8、UTF-16、GBK。
+- **JSON**： 格式化文本，可选中复制，保留原始数字与字符串转义。
 - 直接打开文件，或在右键菜单选择 **Open in Office View**，也可使用 **Office View: Open document** 命令。
 
 ## 安装
