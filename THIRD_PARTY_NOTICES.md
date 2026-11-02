@@ -1,6 +1,6 @@
 # Third-party notices
 
-Office View bundles the following dependencies. The Obsidian API is external and provided by the host application. DOC extraction is implemented against Microsoft's [MS-DOC specification](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-doc/), using SheetJS's bundled CFB reader. No code from other Obsidian office viewers is included.
+Office Lite Viewer bundles the following dependencies. The Obsidian API is external and provided by the host application. DOC extraction is implemented against Microsoft's [MS-DOC specification](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-doc/), using SheetJS's bundled CFB reader. No code from other Obsidian office viewers is included.
 
 ## fflate 0.8.3
 

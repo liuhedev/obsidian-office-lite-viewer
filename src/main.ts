@@ -90,19 +90,19 @@ export default class OfficeViewPlugin extends Plugin {
     this.registerView(VIEW_TYPE, (leaf: WorkspaceLeaf) => new OfficeFileView(leaf));
     for (const extension of EXTENSIONS) {
       try { this.registerExtensions([extension], VIEW_TYPE); }
-      catch { new Notice(`Office View: another plugin handles .${extension}. Use “Open document” or the file menu.`); }
+      catch { new Notice(`Office Lite Viewer: another plugin handles .${extension}. Use “Open document” or the file menu.`); }
     }
     const open = (file: TFile) => { void this.app.workspace.getLeaf('tab').setViewState({ type: VIEW_TYPE, state: { file: file.path }, active: true }); };
     this.addCommand({ id: 'open-spreadsheet', name: 'Open document', callback: () => new OfficePicker(this.app, open).open() });
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file) => {
-      if (file instanceof TFile && supported(file)) menu.addItem(item => item.setTitle('Open in Office View').setIcon('sheet').onClick(() => open(file)));
+      if (file instanceof TFile && supported(file)) menu.addItem(item => item.setTitle('Open in Office Lite Viewer').setIcon('sheet').onClick(() => open(file)));
     }));
     this.registerMarkdownCodeBlockProcessor('office-view', (source, host, context) => {
       const path = source.trim();
       const file = this.app.metadataCache.getFirstLinkpathDest(path, context.sourcePath)
         ?? this.app.vault.getAbstractFileByPath(normalizePath(path));
       if (!(file instanceof TFile) || !supported(file)) {
-        host.createEl('p', { text: 'Office View: enter the path to an existing CSV, XLS, XLSX, DOC, DOCX or JSON file.' }); return;
+        host.createEl('p', { text: 'Office Lite Viewer: enter the path to an existing CSV, XLS, XLSX, DOC, DOCX or JSON file.' }); return;
       }
       const child = new MarkdownRenderChild(host);
       child.addChild(new Preview(this.app, host, file)); context.addChild(child);

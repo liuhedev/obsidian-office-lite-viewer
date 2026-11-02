@@ -9,7 +9,7 @@ const options = {
   entryPoints: ['src/main.ts'], bundle: true, outfile: 'main.js',
   format: 'cjs', platform: 'browser', target: 'es2020', minify: true,
   external: ['obsidian'], define: { __PARSER_WORKER__: JSON.stringify(parser.outputFiles[0].text) },
-  banner: { js: '/* Office View | MIT | Includes SheetJS CE (Apache-2.0), Papa Parse, fflate and xmlchars (MIT), saxes (ISC). See THIRD_PARTY_NOTICES.md. */' },
+  banner: { js: '/* Office Lite Viewer | MIT | Includes SheetJS CE (Apache-2.0), Papa Parse, fflate and xmlchars (MIT), saxes (ISC). See THIRD_PARTY_NOTICES.md. */' },
 };
 if (process.argv.includes('--watch')) {
   // Re-run npm run dev after changing parser.worker.ts.

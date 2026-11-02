@@ -1,17 +1,17 @@
 [English](README.md) · 中文
 
-# Office View
+# Office Lite Viewer
 
 在 Obsidian 中预览 **CSV、XLS/XLSX、DOC/DOCX、JSON**。只读、本地解析、不发网络请求。
 
 - **CSV / XLS / XLSX**： 搜索、排序、分页、工作表切换；CSV 支持 UTF-8、UTF-16、GBK。
 - **DOC / DOCX**： 可选中复制的正文文本，保留段落换行，无需安装办公软件。
 - **JSON**： 格式化文本，可选中复制，保留原始数字与字符串转义。
-- 直接打开文件，或在右键菜单选择 **Open in Office View**，也可使用 **Office View: Open document** 命令。
+- 直接打开文件，或在右键菜单选择 **Open in Office Lite Viewer**，也可使用 **Office Lite Viewer: Open document** 命令。
 
 ## 安装
 
-尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-view/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office View**。扩展名被其他插件接管时，可通过右键菜单打开。
+尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-view/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office Lite Viewer**。扩展名被其他插件接管时，可通过右键菜单打开。
 
 ## 笔记内嵌
 
