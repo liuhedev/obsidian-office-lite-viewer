@@ -11,7 +11,7 @@
 
 ## 安装
 
-尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-view/releases) 下载 ZIP，把 `office-lite-viewer/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office Lite Viewer**。扩展名被其他插件接管时，可通过右键菜单打开。
+尚未上架社区市场。在 [Releases](https://github.com/liuhedev/obsidian-office-lite-viewer/releases) 下载 ZIP，把 `office-lite-viewer/` 解压到笔记库的 `.obsidian/plugins/`，重新加载 Obsidian 后启用 **Office Lite Viewer**。扩展名被其他插件接管时，可通过右键菜单打开。
 
 ## 笔记内嵌
 
