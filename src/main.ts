@@ -5,7 +5,7 @@ import { SpreadsheetGrid } from './grid';
 import { JsonPreview } from './json-view';
 import { WordPreview } from './word-view';
 
-const VIEW_TYPE = 'office-view';
+const VIEW_TYPE = 'office-lite-viewer';
 const EXTENSIONS = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'json'];
 const supported = (file: TFile) => EXTENSIONS.includes(file.extension.toLowerCase());
 
@@ -19,7 +19,7 @@ class Preview extends Component {
   private controls!: HTMLElement;
   constructor(private app: App, private host: HTMLElement, private file: TFile) { super(); }
   onload(): void {
-    this.host.classList.add('office-view'); this.host.replaceChildren();
+    this.host.classList.add('office-lite-viewer'); this.host.replaceChildren();
     const bar = this.host.createDiv({ cls: 'ov-filebar' });
     bar.createSpan({ cls: 'ov-filename', text: this.file.name });
     const options = bar.createEl('details', { cls: 'ov-options' });
@@ -84,7 +84,7 @@ class OfficePicker extends FuzzySuggestModal<TFile> {
   onChooseItem(file: TFile): void { this.openFile(file); }
 }
 
-export default class OfficeViewPlugin extends Plugin {
+export default class OfficeLiteViewerPlugin extends Plugin {
   onunload(): void { this.app.workspace.detachLeavesOfType(VIEW_TYPE); }
   async onload(): Promise<void> {
     this.registerView(VIEW_TYPE, (leaf: WorkspaceLeaf) => new OfficeFileView(leaf));
@@ -97,7 +97,7 @@ export default class OfficeViewPlugin extends Plugin {
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file) => {
       if (file instanceof TFile && supported(file)) menu.addItem(item => item.setTitle('Open in Office Lite Viewer').setIcon('sheet').onClick(() => open(file)));
     }));
-    this.registerMarkdownCodeBlockProcessor('office-view', (source, host, context) => {
+    this.registerMarkdownCodeBlockProcessor('office-lite-viewer', (source, host, context) => {
       const path = source.trim();
       const file = this.app.metadataCache.getFirstLinkpathDest(path, context.sourcePath)
         ?? this.app.vault.getAbstractFileByPath(normalizePath(path));

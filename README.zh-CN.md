@@ -16,7 +16,7 @@
 ## 笔记内嵌
 
 ````markdown
-```office-view
+```office-lite-viewer
 data/budget.xlsx
 ```
 ````
@@ -34,5 +34,3 @@ data/budget.xlsx
 Node.js 22+：`npm ci` → `npm run build` → `npm run package`。
 
 [参与开发](CONTRIBUTING.md) · [MIT 协议](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md)
-
-从 `office-view` 升级：停用旧插件，将旧目录替换为 `office-lite-viewer/`，再启用 Office Lite Viewer。已有 `office-view` 嵌入仍可使用。

@@ -16,7 +16,7 @@ Not yet listed in Community Plugins. Download the ZIP from [Releases](https://gi
 ## Embed
 
 ````markdown
-```office-view
+```office-lite-viewer
 data/budget.xlsx
 ```
 ````
@@ -34,5 +34,3 @@ data/budget.xlsx
 Node.js 22+: `npm ci` → `npm run build` → `npm run package`.
 
 [Contributing](CONTRIBUTING.md) · [MIT](LICENSE) · [Third-party licenses](THIRD_PARTY_NOTICES.md)
-
-Upgrading from `office-view`: disable the old plugin and replace its folder with `office-lite-viewer/`, then enable Office Lite Viewer. Existing `office-view` embeds remain supported.

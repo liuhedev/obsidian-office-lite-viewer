@@ -1,4 +1,4 @@
-.office-view { --ov-line: var(--background-modifier-border); display: flex; flex-direction: column; min-height: 0; padding: 0 !important; color: var(--text-normal); font-family: var(--font-interface); font-size: var(--font-ui-small); }
+.office-lite-viewer { --ov-line: var(--background-modifier-border); display: flex; flex-direction: column; min-height: 0; padding: 0 !important; color: var(--text-normal); font-family: var(--font-interface); font-size: var(--font-ui-small); }
 .ov-filebar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 16px 6px; }
 .ov-filename { font-weight: 600; overflow-wrap: anywhere; }
 .ov-readonly { color: var(--text-muted); border: 1px solid var(--ov-line); border-radius: 4px; padding: 1px 6px; font-size: var(--font-ui-smaller); margin-right: auto; }
@@ -11,46 +11,46 @@
 .ov-notes { padding: 8px 16px; color: var(--text-warning); background: var(--background-secondary); }
 .ov-notes[hidden] { display: none; }
 .ov-table-area { flex: 1; min-height: 100px; overflow: auto; overscroll-behavior: contain; border-top: 1px solid var(--ov-line); }
-.office-view .ov-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; margin: 0; font-size: var(--font-ui-small); }
-.office-view .ov-table :is(td, th) { padding: 7px 12px; border: 0; border-right: 1px solid var(--ov-line); border-bottom: 1px solid var(--ov-line); max-width: 360px; min-width: 100px; text-align: left; vertical-align: top; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
-.office-view .ov-table thead th { position: sticky; top: 0; z-index: 2; background: var(--background-secondary); padding: 0; }
-.office-view .ov-table .ov-row-number { position: sticky; left: 0; min-width: 46px; max-width: 70px; width: 46px; text-align: right; color: var(--text-faint); background: var(--background-primary); font-weight: 400; font-variant-numeric: tabular-nums; z-index: 1; }
-.office-view .ov-table thead .ov-row-number { z-index: 3; padding: 7px 12px; background: var(--background-secondary); }
+.office-lite-viewer .ov-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; margin: 0; font-size: var(--font-ui-small); }
+.office-lite-viewer .ov-table :is(td, th) { padding: 7px 12px; border: 0; border-right: 1px solid var(--ov-line); border-bottom: 1px solid var(--ov-line); max-width: 360px; min-width: 100px; text-align: left; vertical-align: top; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.office-lite-viewer .ov-table thead th { position: sticky; top: 0; z-index: 2; background: var(--background-secondary); padding: 0; }
+.office-lite-viewer .ov-table .ov-row-number { position: sticky; left: 0; min-width: 46px; max-width: 70px; width: 46px; text-align: right; color: var(--text-faint); background: var(--background-primary); font-weight: 400; font-variant-numeric: tabular-nums; z-index: 1; }
+.office-lite-viewer .ov-table thead .ov-row-number { z-index: 3; padding: 7px 12px; background: var(--background-secondary); }
 .ov-table tbody tr:hover td { background: var(--background-primary-alt); }
-.office-view button.ov-sort { display: block; width: 100%; height: auto; min-height: 35px; padding: 7px 12px; border: 0; border-radius: 0; box-shadow: none; background: transparent; text-align: left; color: var(--text-normal); font-weight: 600; white-space: pre-wrap; }
-.office-view button.ov-sort:hover { background: var(--background-modifier-hover); }
+.office-lite-viewer button.ov-sort { display: block; width: 100%; height: auto; min-height: 35px; padding: 7px 12px; border: 0; border-radius: 0; box-shadow: none; background: transparent; text-align: left; color: var(--text-normal); font-weight: 600; white-space: pre-wrap; }
+.office-lite-viewer button.ov-sort:hover { background: var(--background-modifier-hover); }
 .ov-footer { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 8px 16px; border-top: 1px solid var(--ov-line); color: var(--text-muted); }
 .ov-paging { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; }
 .ov-sheets { display: flex; overflow-x: auto; gap: 3px; padding: 5px 12px 0; border-top: 1px solid var(--ov-line); background: var(--background-secondary); }
-.office-view button.ov-sheet { flex-shrink: 0; border: 0; box-shadow: none; border-radius: 4px 4px 0 0; background: transparent; color: var(--text-muted); border-bottom: 2px solid transparent; }
-.office-view button.ov-sheet[aria-pressed="true"] { color: var(--text-accent); border-bottom-color: var(--interactive-accent); background: var(--background-primary); }
+.office-lite-viewer button.ov-sheet { flex-shrink: 0; border: 0; box-shadow: none; border-radius: 4px 4px 0 0; background: transparent; color: var(--text-muted); border-bottom: 2px solid transparent; }
+.office-lite-viewer button.ov-sheet[aria-pressed="true"] { color: var(--text-accent); border-bottom-color: var(--interactive-accent); background: var(--background-primary); }
 .ov-error, .ov-empty { padding: 24px 16px; color: var(--text-muted); }
 .ov-error { color: var(--text-error); }
 .ov-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.markdown-rendered .office-view { height: 480px; border: 1px solid var(--ov-line); border-radius: 6px; overflow: hidden; margin: 1em 0; }
+.markdown-rendered .office-lite-viewer { height: 480px; border: 1px solid var(--ov-line); border-radius: 6px; overflow: hidden; margin: 1em 0; }
 @media (max-width: 500px) { .ov-header-toggle { font-size: var(--font-ui-smaller); } .ov-filebar, .ov-grid-toolbar, .ov-footer { padding-left: 10px; padding-right: 10px; } }
 
 /* Keep the document prominent; advanced controls open on demand. */
 .ov-filebar { flex-wrap: nowrap; padding: 8px 12px; }
 .ov-filename { flex: 1; font-weight: 500; font-size: var(--font-ui-small); color: var(--text-muted); }
 .ov-options, .ov-grid-options { position: relative; }
-.office-view summary { cursor: pointer; list-style: none; color: var(--text-muted); padding: 0 8px; font-size: 20px; line-height: 28px; border-radius: 4px; }
-.office-view summary::-webkit-details-marker { display: none; }
-.office-view summary:hover { background: var(--background-modifier-hover); }
+.office-lite-viewer summary { cursor: pointer; list-style: none; color: var(--text-muted); padding: 0 8px; font-size: 20px; line-height: 28px; border-radius: 4px; }
+.office-lite-viewer summary::-webkit-details-marker { display: none; }
+.office-lite-viewer summary:hover { background: var(--background-modifier-hover); }
 .ov-options-panel, .ov-grid-options > .ov-header-toggle { position: absolute; right: 0; top: 100%; z-index: 10; display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--ov-line); border-radius: 6px; background: var(--background-primary); box-shadow: var(--shadow-s); }
 .ov-grid-options > .ov-header-toggle { flex-direction: row; align-items: center; }
 .ov-readonly { border: 0; padding: 0; }
 .ov-details { padding: 0; }
 .ov-grid-toolbar { padding: 6px 12px; gap: 6px; border-top: 0; }
-.office-view .ov-search { box-shadow: none; background: transparent; border-color: transparent; }
-.office-view .ov-search:focus { border-color: var(--background-modifier-border-focus); }
+.office-lite-viewer .ov-search { box-shadow: none; background: transparent; border-color: transparent; }
+.office-lite-viewer .ov-search:focus { border-color: var(--background-modifier-border-focus); }
 .ov-footer { padding: 5px 12px; font-size: var(--font-ui-smaller); border-top: 0; }
 .ov-paging button { box-shadow: none; background: transparent; font-size: inherit; height: 24px; padding: 0 6px; }
 .ov-paging[hidden], .ov-sheets[hidden] { display: none; }
 .ov-sheets { padding: 0 8px; background: transparent; }
-.office-view button.ov-sheet { border-radius: 0; background: transparent; }
-.office-view button.ov-sheet[aria-pressed="true"] { background: transparent; }
+.office-lite-viewer button.ov-sheet { border-radius: 0; background: transparent; }
+.office-lite-viewer button.ov-sheet[aria-pressed="true"] { background: transparent; }
 
-.office-view .ov-json-text { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 12px 16px; border: 0; border-radius: 0; background: transparent; font-family: var(--font-monospace); font-size: var(--font-ui-small); line-height: 1.6; white-space: pre; tab-size: 2; user-select: text; }
-.office-view .ov-word-text { flex: 1; min-height: 0; overflow: auto; padding: 16px 20px; font-family: var(--font-text); font-size: var(--font-text-size); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
-.office-view .ov-json-text code { padding: 0; background: transparent; color: var(--text-normal); font: inherit; white-space: inherit; }
+.office-lite-viewer .ov-json-text { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 12px 16px; border: 0; border-radius: 0; background: transparent; font-family: var(--font-monospace); font-size: var(--font-ui-small); line-height: 1.6; white-space: pre; tab-size: 2; user-select: text; }
+.office-lite-viewer .ov-word-text { flex: 1; min-height: 0; overflow: auto; padding: 16px 20px; font-family: var(--font-text); font-size: var(--font-text-size); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+.office-lite-viewer .ov-json-text code { padding: 0; background: transparent; color: var(--text-normal); font: inherit; white-space: inherit; }
