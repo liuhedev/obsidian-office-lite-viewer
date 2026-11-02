@@ -1,0 +1,25 @@
+{
+  "name": "obsidian-office-view",
+  "version": "0.1.0",
+  "description": "Local, read-only CSV and XLSX previews for Obsidian.",
+  "private": true,
+  "license": "MIT",
+  "author": "liuhedev",
+  "scripts": {
+    "dev": "node esbuild.config.mjs --watch",
+    "build": "tsc --noEmit && node esbuild.config.mjs",
+    "check": "tsc --noEmit",
+    "package": "npm run build && node scripts/package.mjs"
+  },
+  "dependencies": {
+    "papaparse": "5.7.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/papaparse": "^5.3.16",
+    "esbuild": "0.28.2",
+    "obsidian": "1.14.4",
+    "typescript": "^5.9.3"
+  }
+}
