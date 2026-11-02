@@ -2,7 +2,7 @@
 
 Open a spreadsheet without leaving your notes. Office View previews **CSV and XLSX** files directly in Obsidian, using your vault's theme. All parsing happens on your device; the plugin makes no network requests and never writes to source documents.
 
-**Status:** 0.1.0, an early read-only release. Not yet listed in Obsidian's Community Plugins directory.
+**Status:** 0.1.1, an early read-only release. Not yet listed in Obsidian's Community Plugins directory.
 
 [中文说明](README.zh-CN.md)
 
@@ -67,3 +67,5 @@ CSV parsing uses Papa Parse. XLSX parsing uses SheetJS Community Edition from it
 ## License
 
 MIT — see [LICENSE](LICENSE). This project is independent of Obsidian and Microsoft Office.
+
+Preview controls stay compact: encoding, delimiter, reload and parsing details are under the file menu (⋯); the first-row header toggle is in the same menu. Single-sheet tabs and single-page navigation are hidden.

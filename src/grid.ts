@@ -22,7 +22,7 @@ export class SpreadsheetGrid {
   private readonly tabs = element('div', 'ov-sheets');
   private readonly abort = new AbortController();
 
-  constructor(private host: HTMLElement, private data: DocumentData) {
+  constructor(private host: HTMLElement, private data: DocumentData, optionsHost?: HTMLElement) {
     const toolbar = element('div', 'ov-grid-toolbar');
     const search = element('input', 'ov-search');
     search.type = 'search'; search.placeholder = 'Search this sheet…'; search.setAttribute('aria-label', 'Search this sheet');
@@ -31,7 +31,15 @@ export class SpreadsheetGrid {
     const checkbox = element('input'); checkbox.type = 'checkbox'; checkbox.checked = true;
     checkbox.addEventListener('change', () => { this.header = checkbox.checked; this.page = 0; this.updateRows(); }, { signal: this.abort.signal });
     label.append(checkbox, document.createTextNode('First row is header'));
-    toolbar.append(search, label);
+    const options = element('details', 'ov-grid-options');
+    const summary = element('summary', '', '⋯');
+    summary.setAttribute('aria-label', 'Table options'); summary.title = 'Table options';
+    options.append(summary, label);
+    if (optionsHost) {
+      optionsHost.querySelector('.ov-header-toggle')?.remove();
+      optionsHost.append(label);
+      toolbar.append(search);
+    } else toolbar.append(search, options);
     this.tabs.setAttribute('role', 'group'); this.tabs.setAttribute('aria-label', 'Worksheets');
     this.tableArea.tabIndex = 0; this.tableArea.setAttribute('aria-label', 'Spreadsheet preview');
     this.host.replaceChildren(toolbar, this.notes, this.tableArea, this.footer, this.tabs);
@@ -93,7 +101,9 @@ export class SpreadsheetGrid {
     previous.addEventListener('click', () => { this.page--; this.render(); });
     next.addEventListener('click', () => { this.page++; this.render(); });
     paging.append(previous, element('span', '', `${this.page + 1} / ${pages}`), next);
+    paging.hidden = pages <= 1;
     this.footer.replaceChildren(info, paging);
+    this.tabs.hidden = this.data.sheets.length <= 1;
     this.tabs.replaceChildren();
     this.data.sheets.forEach((entry, index) => {
       const tab = element('button', 'ov-sheet', entry.name);

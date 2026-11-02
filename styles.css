@@ -29,3 +29,24 @@
 .ov-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .markdown-rendered .office-view { height: 480px; border: 1px solid var(--ov-line); border-radius: 6px; overflow: hidden; margin: 1em 0; }
 @media (max-width: 500px) { .ov-header-toggle { font-size: var(--font-ui-smaller); } .ov-filebar, .ov-grid-toolbar, .ov-footer { padding-left: 10px; padding-right: 10px; } }
+
+/* Keep the document prominent; advanced controls open on demand. */
+.ov-filebar { flex-wrap: nowrap; padding: 8px 12px; }
+.ov-filename { flex: 1; font-weight: 500; font-size: var(--font-ui-small); color: var(--text-muted); }
+.ov-options, .ov-grid-options { position: relative; }
+.office-view summary { cursor: pointer; list-style: none; color: var(--text-muted); padding: 0 8px; font-size: 20px; line-height: 28px; border-radius: 4px; }
+.office-view summary::-webkit-details-marker { display: none; }
+.office-view summary:hover { background: var(--background-modifier-hover); }
+.ov-options-panel, .ov-grid-options > .ov-header-toggle { position: absolute; right: 0; top: 100%; z-index: 10; display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--ov-line); border-radius: 6px; background: var(--background-primary); box-shadow: var(--shadow-s); }
+.ov-grid-options > .ov-header-toggle { flex-direction: row; align-items: center; }
+.ov-readonly { border: 0; padding: 0; }
+.ov-details { padding: 0; }
+.ov-grid-toolbar { padding: 6px 12px; gap: 6px; border-top: 0; }
+.office-view .ov-search { box-shadow: none; background: transparent; border-color: transparent; }
+.office-view .ov-search:focus { border-color: var(--background-modifier-border-focus); }
+.ov-footer { padding: 5px 12px; font-size: var(--font-ui-smaller); border-top: 0; }
+.ov-paging button { box-shadow: none; background: transparent; font-size: inherit; height: 24px; padding: 0 6px; }
+.ov-paging[hidden], .ov-sheets[hidden] { display: none; }
+.ov-sheets { padding: 0 8px; background: transparent; }
+.office-view button.ov-sheet { border-radius: 0; background: transparent; }
+.office-view button.ov-sheet[aria-pressed="true"] { background: transparent; }

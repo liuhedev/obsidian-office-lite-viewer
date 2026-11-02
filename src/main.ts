@@ -13,19 +13,23 @@ class Preview extends Component {
   private options: ParseOptions = { encoding: 'auto', delimiter: '' };
   private gridHost!: HTMLElement;
   private details!: HTMLElement;
+  private controls!: HTMLElement;
   constructor(private app: App, private host: HTMLElement, private file: TFile) { super(); }
   onload(): void {
     this.host.classList.add('office-view'); this.host.replaceChildren();
     const bar = this.host.createDiv({ cls: 'ov-filebar' });
     bar.createSpan({ cls: 'ov-filename', text: this.file.name });
-    bar.createSpan({ cls: 'ov-readonly', text: 'Read only' });
+    const options = bar.createEl('details', { cls: 'ov-options' });
+    options.createEl('summary', { text: '⋯', attr: { 'aria-label': 'Preview options', title: 'Preview options' } });
+    const controls = this.controls = options.createDiv({ cls: 'ov-options-panel' });
+    controls.createSpan({ cls: 'ov-readonly', text: 'Read only' });
     if (this.file.extension.toLowerCase() === 'csv') {
-      this.select(bar, 'Encoding', [['auto', 'Auto encoding'], ['utf-8', 'UTF-8'], ['gb18030', 'GB18030 / GBK'], ['utf-16le', 'UTF-16 LE'], ['utf-16be', 'UTF-16 BE']], value => { this.options.encoding = value as Encoding; void this.refresh(); });
-      this.select(bar, 'Delimiter', [['', 'Auto delimiter'], [',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']], value => { this.options.delimiter = value; void this.refresh(); });
+      this.select(controls, 'Encoding', [['auto', 'Auto encoding'], ['utf-8', 'UTF-8'], ['gb18030', 'GB18030 / GBK'], ['utf-16le', 'UTF-16 LE'], ['utf-16be', 'UTF-16 BE']], value => { this.options.encoding = value as Encoding; void this.refresh(); });
+      this.select(controls, 'Delimiter', [['', 'Auto delimiter'], [',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']], value => { this.options.delimiter = value; void this.refresh(); });
     }
-    const reload = bar.createEl('button', { text: 'Reload', attr: { title: 'Reload from disk' } });
+    const reload = controls.createEl('button', { text: 'Reload', attr: { title: 'Reload from disk' } });
     this.registerDomEvent(reload, 'click', () => void this.refresh());
-    this.details = this.host.createDiv({ cls: 'ov-details' });
+    this.details = controls.createDiv({ cls: 'ov-details' });
     this.gridHost = this.host.createDiv({ cls: 'ov-grid' });
     this.registerEvent(this.app.vault.on('modify', file => { if (file === this.file) void this.refresh(); }));
     void this.refresh();
@@ -46,7 +50,7 @@ class Preview extends Component {
       const data = await this.reader.parse(buffer, this.file.extension.toLowerCase(), this.options);
       if (generation !== this.generation) return;
       this.details.textContent = data.details;
-      this.grid = new SpreadsheetGrid(this.gridHost, data);
+      this.grid = new SpreadsheetGrid(this.gridHost, data, this.controls);
     } catch (error) {
       if (generation !== this.generation) return;
       this.gridHost.replaceChildren();
