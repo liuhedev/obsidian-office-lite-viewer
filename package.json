@@ -1,6 +1,6 @@
 {
   "name": "obsidian-office-lite-viewer",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Local, read-only CSV, XLS/XLSX, DOC/DOCX and JSON previews for Obsidian.",
   "private": true,
   "license": "MIT",

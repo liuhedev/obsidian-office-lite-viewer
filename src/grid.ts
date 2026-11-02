@@ -2,10 +2,7 @@ import { columnName, type DocumentData, type Sheet } from './model';
 
 const PAGE_SIZE = 100;
 function element<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text = ''): HTMLElementTagNameMap[K] {
-  const node = document.createElement(tag);
-  node.className = cls;
-  node.textContent = text;
-  return node;
+  return createEl(tag, { cls, text });
 }
 
 export class SpreadsheetGrid {

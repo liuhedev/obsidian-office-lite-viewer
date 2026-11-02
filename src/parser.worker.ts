@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { doc, docx, isCompound, readCompound } from './word';
+import { compoundStream, doc, docx, isCompound, readCompound } from './word';
 import * as XLSX from 'xlsx';
 import { MAX_BYTES, MAX_CELLS, MAX_COLS, MAX_ROWS, MAX_SHEETS, type DocumentData, type ParseOptions, type ParseReply, type Sheet } from './model';
 
@@ -40,9 +40,8 @@ function spreadsheet(bytes: Uint8Array, extension: string): DocumentData {
   if (extension === 'xls') {
     if (!isCompound(bytes)) throw new Error('Not an Excel 97–2003 binary XLS workbook. Re-export it as .xls or .xlsx.');
     const compound = readCompound(bytes);
-    const entry = XLSX.CFB.find(compound, '/Workbook') ?? XLSX.CFB.find(compound, '/Book');
-    if (!entry?.content) throw new Error('Invalid XLS: missing workbook stream.');
-    const content = new Uint8Array(entry.content);
+    const content = compoundStream(compound, 'Workbook') ?? compoundStream(compound, 'Book');
+    if (!content) throw new Error('Invalid XLS: missing workbook stream.');
     const view = new DataView(content.buffer, content.byteOffset, content.byteLength);
     if (content.length < 8 || view.getUint16(0, true) !== 0x809 || view.getUint16(4, true) !== 0x600) throw new Error('Only Excel 97–2003 (BIFF8) XLS is supported.');
     for (let pos = 0; pos + 4 <= content.length;) {
@@ -63,7 +62,8 @@ function spreadsheet(bytes: Uint8Array, extension: string): DocumentData {
     const sheet = workbook.Sheets[name];
     if (!sheet) continue;
     const notes: string[] = [];
-    const ref = sheet['!fullref'] || sheet['!ref'];
+    const fullref: unknown = sheet['!fullref'];
+    const ref = typeof fullref === 'string' ? fullref : sheet['!ref'];
     if (!ref) { sheets.push({ name, rows: [], columns: 0, warnings: [] }); continue; }
     const range = XLSX.utils.decode_range(ref);
     const columns = Math.min(MAX_COLS, range.e.c + 1);
@@ -77,7 +77,7 @@ function spreadsheet(bytes: Uint8Array, extension: string): DocumentData {
     });
     // Formula cells without cached values have no result to display.
     for (let r = 0; r < rows.length; r++) for (let c = 0; c < columns; c++) {
-      const cell = (sheet['!data'] as XLSX.CellObject[][] | undefined)?.[r]?.[c];
+      const cell = sheet['!data']?.[r]?.[c];
       if (cell?.f && cell.v == null) rows[r]![c] = `=${cell.f}`;
     }
     budget -= rows.length * columns;
@@ -90,7 +90,7 @@ function json(bytes: Uint8Array): DocumentData {
   const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes).replace(/^\uFEFF/, '');
   try { JSON.parse(text); } catch { throw new Error('Invalid JSON. Check syntax (JSON comments and trailing commas are not supported).'); }
   // Format original tokens so numeric identifiers and escape sequences stay intact.
-  const tokens = text.match(/"(?:\\[\s\S]|[^"\\])*"|[{}\[\],:]|[^\s{}\[\],:]+/g) ?? [];
+  const tokens = text.match(/"(?:\\[\s\S]|[^"\\])*"|[{}[\],:]|[^\s{}[\],:]+/g) ?? [];
   const parts: string[] = [];
   let depth = 0; let size = 0;
   const append = (part: string) => {

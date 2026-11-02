@@ -85,7 +85,6 @@ class OfficePicker extends FuzzySuggestModal<TFile> {
 }
 
 export default class OfficeLiteViewerPlugin extends Plugin {
-  onunload(): void { this.app.workspace.detachLeavesOfType(VIEW_TYPE); }
   async onload(): Promise<void> {
     this.registerView(VIEW_TYPE, (leaf: WorkspaceLeaf) => new OfficeFileView(leaf));
     for (const extension of EXTENSIONS) {

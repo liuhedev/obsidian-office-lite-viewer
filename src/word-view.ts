@@ -2,7 +2,7 @@ import type { DocumentData } from './model';
 
 export class WordPreview {
   constructor(private host: HTMLElement, data: DocumentData) {
-    const body = document.createElement('div');
+    const body = createEl('div');
     body.className = 'ov-word-text';
     body.tabIndex = 0;
     body.setAttribute('role', 'document');

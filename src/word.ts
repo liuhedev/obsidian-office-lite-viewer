@@ -1,16 +1,28 @@
-import { CFB } from 'xlsx';
+import { CFB as untypedCFB } from 'xlsx';
+
 import { Unzip, UnzipInflate } from 'fflate';
 import { SaxesParser } from 'saxes';
 import { MAX_BYTES, type DocumentData } from './model';
+
+// SheetJS exposes CFB as any; constrain the two APIs used by this parser.
+const CFB = untypedCFB as {
+  read(bytes: Uint8Array, options: { type: 'array' }): unknown;
+  find(compound: unknown, path: string): { content?: Uint8Array | number[] } | null;
+};
 
 const MAX_TEXT = 2_000_000;
 const WORD_NS = new Set(['http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'http://purl.oclc.org/ooxml/wordprocessingml/main']);
 export const isCompound = (bytes: Uint8Array): boolean =>
   [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1].every((value, i) => bytes[i] === value);
 
-export function readCompound(bytes: Uint8Array): ReturnType<typeof CFB.read> {
+export function readCompound(bytes: Uint8Array): unknown {
   try { return CFB.read(bytes, { type: 'array' }); }
   catch { throw new Error('Invalid or truncated compound Office file.'); }
+}
+
+export function compoundStream(compound: unknown, name: string): Uint8Array | undefined {
+  const entry = CFB.find(compound, '/' + name);
+  return entry?.content ? new Uint8Array(entry.content) : undefined;
 }
 
 function result(text: string, format: string): DocumentData {
@@ -24,9 +36,9 @@ export function doc(bytes: Uint8Array): DocumentData {
   if (!isCompound(bytes)) throw new Error('Not a binary Word 97–2003 DOC file. RTF, HTML and older Word formats are not supported.');
   const compound = readCompound(bytes);
   const stream = (name: string): Uint8Array => {
-    const entry = CFB.find(compound, '/' + name);
-    if (!entry?.content) throw new Error(`Invalid DOC: missing ${name} stream.`);
-    return new Uint8Array(entry.content);
+    const content = compoundStream(compound, name);
+    if (!content) throw new Error(`Invalid DOC: missing ${name} stream.`);
+    return content;
   };
   if (CFB.find(compound, '/EncryptedPackage')) throw new Error('Encrypted documents are not supported.');
   const word = stream('WordDocument');
