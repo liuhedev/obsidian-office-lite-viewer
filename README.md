@@ -11,7 +11,9 @@ Preview **CSV, XLS/XLSX, DOC/DOCX and JSON** in Obsidian. Read-only, local, no n
 
 ## Install
 
-Not yet listed in Community Plugins. Download the ZIP from [Releases](https://github.com/liuhedev/obsidian-office-lite-viewer/releases), extract `office-lite-viewer/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office Lite Viewer**. If another plugin handles the extension, use the file menu to open it.
+[Community listing](https://community.obsidian.md/plugins/office-lite-viewer) · [Download ZIP](https://github.com/liuhedev/obsidian-office-lite-viewer/releases/latest).
+
+For manual installation, extract `office-lite-viewer/` into `<vault>/.obsidian/plugins/`, reload Obsidian and enable **Office Lite Viewer**.
 
 ## Embed
 
