@@ -23,6 +23,8 @@ data/budget.xlsx
 ```
 ````
 
+On desktop, choose **⋯ → Open in default app** to open the file with its system-associated application.
+
 ## Limits
 
 - No editing or macro execution. XLS (Excel 97–2003 BIFF8) / XLSX show saved values without recalculating formulas; styles, charts, images and merged-cell layout are not reproduced. Hidden sheets may be shown. Encrypted files are unsupported.

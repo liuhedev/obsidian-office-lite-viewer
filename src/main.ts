@@ -1,4 +1,4 @@
-import { Component, FileView, FuzzySuggestModal, MarkdownRenderChild, Notice, Plugin, TFile, normalizePath, type App, type WorkspaceLeaf } from 'obsidian';
+import { Component, FileView, FuzzySuggestModal, MarkdownRenderChild, Notice, Platform, Plugin, TFile, normalizePath, type App, type WorkspaceLeaf } from 'obsidian';
 import { MAX_BYTES, type Encoding, type ParseOptions } from './model';
 import { DocumentReader } from './reader';
 import { SpreadsheetGrid } from './grid';
@@ -32,6 +32,16 @@ class Preview extends Component {
     }
     const reload = controls.createEl('button', { text: 'Reload', attr: { title: 'Reload from disk' } });
     this.registerDomEvent(reload, 'click', () => void this.refresh());
+    const systemApp = this.app as App & { openWithDefaultApp?: (path: string) => Promise<void> | void };
+    if (Platform.isDesktopApp && typeof systemApp.openWithDefaultApp === 'function') {
+      const open = controls.createEl('button', { text: 'Open in default app' });
+      this.registerDomEvent(open, 'click', async () => {
+        open.disabled = true;
+        try { await systemApp.openWithDefaultApp?.(this.file.path); }
+        catch { new Notice('Unable to open this file. Check that a default application is configured for this file type.'); }
+        finally { open.disabled = false; }
+      });
+    }
     this.details = controls.createDiv({ cls: 'ov-details' });
     this.gridHost = this.host.createDiv({ cls: 'ov-grid' });
     this.registerEvent(this.app.vault.on('modify', file => { if (file === this.file) void this.refresh(); }));
