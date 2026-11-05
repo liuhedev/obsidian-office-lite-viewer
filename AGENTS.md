@@ -5,6 +5,6 @@ This is an Obsidian plugin. Source lives in `src/`, release files are generated 
 - Keep source documents read-only. Use browser APIs and Obsidian's public API; do not access Node/Electron internals in runtime code. The desktop default-app action may use the capability-checked Obsidian `app.openWithDefaultApp` bridge; it is not declared in the public type definitions.
 - Follow the behavior and limits in README.md. Keep docs and release metadata aligned with verified behavior.
 - Do not add or modify unit tests. Validate with `npm run build` and targeted parser-worker / Obsidian integration checks. Keep temporary validation scripts outside the repository.
-- Never render document content as HTML or execute document code. No runtime network requests.
+- Render Office/JSON content only as text. HTML/HTM previews may render sanitized markup in an opaque-origin sandboxed iframe with a restrictive CSP; never execute document code. No runtime network requests.
 - Main tracks origin/main. GitHub is the authoritative upstream; make authorized changes directly on main.
 - Do not include real user files, private paths, tokens, or machine-specific artifacts in commits.

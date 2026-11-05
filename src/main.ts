@@ -4,14 +4,15 @@ import { DocumentReader } from './reader';
 import { SpreadsheetGrid } from './grid';
 import { JsonPreview } from './json-view';
 import { WordPreview } from './word-view';
+import { HtmlPreview } from './html-view';
 
 const VIEW_TYPE = 'office-lite-viewer';
-const EXTENSIONS = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'json'];
+const EXTENSIONS = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'json', 'html', 'htm'];
 const supported = (file: TFile) => EXTENSIONS.includes(file.extension.toLowerCase());
 
 class Preview extends Component {
   private reader = new DocumentReader();
-  private grid?: SpreadsheetGrid | JsonPreview | WordPreview;
+  private grid?: SpreadsheetGrid | JsonPreview | WordPreview | HtmlPreview;
   private generation = 0;
   private options: ParseOptions = { encoding: 'auto', delimiter: '' };
   private gridHost!: HTMLElement;
@@ -60,6 +61,13 @@ class Preview extends Component {
       if (this.file.stat.size > MAX_BYTES) throw new Error('File exceeds the 20 MiB preview limit. Open a smaller file.');
       const buffer = await this.app.vault.readBinary(this.file);
       if (generation !== this.generation) return;
+      if (buffer.byteLength > MAX_BYTES) throw new Error('File exceeds the 20 MiB preview limit.');
+      if (['html', 'htm'].includes(this.file.extension.toLowerCase())) {
+        const html = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+        this.details.textContent = 'UTF-8 HTML · static, isolated preview';
+        this.grid = new HtmlPreview(this.gridHost, html);
+        return;
+      }
       const data = await this.reader.parse(buffer, this.file.extension.toLowerCase(), this.options);
       if (generation !== this.generation) return;
       this.details.textContent = data.details;
@@ -88,7 +96,7 @@ class OfficeFileView extends FileView {
 }
 
 class OfficePicker extends FuzzySuggestModal<TFile> {
-  constructor(app: App, private openFile: (file: TFile) => void) { super(app); this.setPlaceholder('Open a CSV, XLS, XLSX, DOC, DOCX or JSON file…'); }
+  constructor(app: App, private openFile: (file: TFile) => void) { super(app); this.setPlaceholder('Open a CSV, XLS, XLSX, DOC, DOCX, JSON or HTML file…'); }
   getItems(): TFile[] { return this.app.vault.getFiles().filter(supported); }
   getItemText(file: TFile): string { return file.path; }
   onChooseItem(file: TFile): void { this.openFile(file); }
@@ -111,7 +119,7 @@ export default class OfficeLiteViewerPlugin extends Plugin {
       const file = this.app.metadataCache.getFirstLinkpathDest(path, context.sourcePath)
         ?? this.app.vault.getAbstractFileByPath(normalizePath(path));
       if (!(file instanceof TFile) || !supported(file)) {
-        host.createEl('p', { text: 'Office Lite Viewer: enter the path to an existing CSV, XLS, XLSX, DOC, DOCX or JSON file.' }); return;
+        host.createEl('p', { text: 'Office Lite Viewer: enter the path to an existing CSV, XLS, XLSX, DOC, DOCX, JSON or HTML file.' }); return;
       }
       const child = new MarkdownRenderChild(host);
       child.addChild(new Preview(this.app, host, file)); context.addChild(child);
