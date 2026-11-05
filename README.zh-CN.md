@@ -7,7 +7,7 @@
 - **CSV / XLS / XLSX**： 搜索、排序、分页、工作表切换；CSV 支持 UTF-8、UTF-16、GBK。
 - **DOC / DOCX**： 可选中复制的正文文本，保留段落换行，无需安装办公软件。
 - **JSON**： 格式化文本，可选中复制，保留原始数字与字符串转义。
-- **HTML / HTM**：隔离的渲染预览，可切换源码；开启 **Scripts** 运行可信页面的按钮、滑块、Canvas 与图表，另行开启 **External resources** 加载 HTTP(S) 脚本、CSS、图片、字体及 fetch 请求。
+- **HTML / HTM**：隔离的渲染预览，可切换源码，保留完整网页的语言、正文样式及脚本模式下的加载事件；开启 **Scripts** 运行可信页面的按钮、滑块、Canvas 与图表，另行开启 **External resources** 加载 HTTP(S) 脚本、CSS、图片、字体及 fetch 请求。
 - 直接打开文件，或在右键菜单选择 **Open in Office Lite Viewer**，也可使用 **Office Lite Viewer: Open document** 命令。
 
 ## 安装

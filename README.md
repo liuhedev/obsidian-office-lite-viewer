@@ -7,7 +7,7 @@ Preview **CSV, XLS/XLSX, DOC/DOCX, JSON and HTML/HTM** in Obsidian. Source files
 - **CSV / XLS / XLSX:** search, sort, pagination and worksheet tabs. CSV supports UTF-8, UTF-16 and GBK.
 - **DOC / DOCX:** selectable body text with paragraph breaks; no office software required.
 - **JSON:** formatted, selectable text; original numbers and string escapes are preserved.
-- **HTML / HTM:** rendered preview and selectable source, isolated from Obsidian. Enable **Scripts** for trusted buttons, sliders, Canvas and charts; enable **External resources** separately for HTTP(S) scripts, CSS, images, fonts and fetch requests.
+- **HTML / HTM:** rendered preview and selectable source, isolated from Obsidian. Full-document language, body styles and script-mode load handlers are preserved. Enable **Scripts** for trusted buttons, sliders, Canvas and charts; enable **External resources** separately for HTTP(S) scripts, CSS, images, fonts and fetch requests.
 - Open a file directly, choose **Open in Office Lite Viewer** from its menu, or run **Office Lite Viewer: Open document**.
 
 ## Install

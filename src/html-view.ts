@@ -85,6 +85,23 @@ export class HtmlPreview {
       }
     };
     clean(template.content);
+    // Fragment parsing omits html/body attributes. Recover their start tags,
+    // skipping comments and raw-text elements, then use the same sanitization.
+    const attributes: Record<string, string> = { html: '', body: '' };
+    const seen = new Set<string>();
+    const tags = /<!--[\s\S]*?-->|<(script|style|textarea|title)\b(?:[^"'<>]|"[^"]*"|'[^']*')*>[\s\S]*?<\/\1\s*>|<![^>]*>|<(html|body)\b((?:[^"'<>]|"[^"]*"|'[^']*')*)>/gi;
+    for (const match of this.html.matchAll(tags)) {
+      if (!match[2]) continue;
+      const tag = match[2].toLowerCase();
+      if (seen.has(tag)) continue;
+      seen.add(tag);
+      const holder = document.createElement('template');
+      holder.innerHTML = `<div${match[3]}></div>`;
+      clean(holder.content);
+      const element = holder.content.firstElementChild;
+      if (element) attributes[tag] = Array.from(element.attributes, attribute =>
+        ` ${attribute.name}="${attribute.value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}"`).join('');
+    }
     const frame = this.frame = document.createElement('iframe');
     frame.className = 'ov-html-frame';
     frame.title = 'HTML preview';
@@ -94,7 +111,7 @@ export class HtmlPreview {
     const remote = this.external ? 'https: http:' : '';
     const scripts = this.scripts ? `'unsafe-inline' ${remote}` : "'none'";
     const policy = `default-src 'none'; script-src ${scripts}; style-src 'unsafe-inline' ${remote}; img-src data: ${remote}; font-src ${remote || "'none'"}; media-src ${remote || "'none'"}; connect-src ${remote || "'none'"}; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'`;
-    const documentHtml = '<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="' + policy + '"><style>html{color-scheme:light}body{margin:16px;background:white;color:#222}img{max-width:100%}</style>' + template.innerHTML;
+    const documentHtml = '<!doctype html><html' + attributes.html + '><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="' + policy + '"><style>html{color-scheme:light}body{margin:16px;background:white;color:#222}img{max-width:100%}</style></head><body' + attributes.body + '>' + template.innerHTML + '</body></html>';
     this.url = URL.createObjectURL(new Blob([documentHtml], { type: 'text/html' }));
     frame.src = this.url;
     this.body.append(frame);
