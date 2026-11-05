@@ -12,6 +12,6 @@ Do not add or change unit tests under the current project policy. Use type check
 
 ## Security and data
 
-Render cell values as text. Office/JSON content must stay text-only. HTML previews may render markup only inside an opaque-origin sandboxed iframe with restrictive CSP; strip scripts, handlers, navigation and embedded frames. Never execute document scripts, formulas/macros, or fetch workbook relationships. No runtime CDN, telemetry, remote document conversion, or credentials. Keep parser timeouts, cancellation, size limits, and notices accurate. A worker is for responsiveness, not a security sandbox.
+Render cell values as text. Office/JSON content must stay text-only. HTML previews may render markup only inside an opaque-origin sandboxed iframe with restrictive CSP; strip navigation and embedded frames, and strip scripts/handlers unless the preview script switch is on. HTTP(S) resources require the separate external-resource switch. Never grant same-origin access, execute Office formulas/macros, or fetch workbook relationships. No telemetry, remote document conversion, or credentials. Keep parser timeouts, cancellation, size limits, and notices accurate. A worker is for responsiveness, not a security sandbox.
 
 Dependencies must be pinned by the lockfile, include license notices, and come from their official source. Report security issues privately via the repository's Security tab if private reporting is available; otherwise report a minimal issue without sensitive attachments or exploit documents.

@@ -64,7 +64,7 @@ class Preview extends Component {
       if (buffer.byteLength > MAX_BYTES) throw new Error('File exceeds the 20 MiB preview limit.');
       if (['html', 'htm'].includes(this.file.extension.toLowerCase())) {
         const html = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
-        this.details.textContent = 'UTF-8 HTML · static, isolated preview';
+        this.details.textContent = 'UTF-8 HTML · isolated preview';
         this.grid = new HtmlPreview(this.gridHost, html);
         return;
       }
