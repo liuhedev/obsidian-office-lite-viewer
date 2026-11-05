@@ -10,6 +10,13 @@ export class HtmlPreview {
     host.replaceChildren();
     const toolbar = host.createDiv({ cls: 'ov-html-toolbar' });
     const toggle = toolbar.createEl('button', { text: 'Show source', attr: { 'aria-pressed': 'false' } });
+    const restore = toolbar.createEl('button', { text: 'Back to file', attr: { title: 'Return to the original HTML file after navigation; resets page state' } });
+    restore.addEventListener('click', () => {
+      this.source = false;
+      toggle.textContent = 'Show source';
+      toggle.setAttribute('aria-pressed', 'false');
+      this.render();
+    });
     toggle.addEventListener('click', () => {
       this.source = !this.source;
       toggle.textContent = this.source ? 'Show preview' : 'Show source';

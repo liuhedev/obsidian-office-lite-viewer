@@ -24,6 +24,8 @@ data/budget.xlsx
 ```
 ````
 
+For HTML, **Back to file** restores the original document if a script navigates the preview away. It resets page state while retaining the current script/resource switches; it is not browser Back history.
+
 On desktop, choose **⋯ → Open in default app** to open the file with its system-associated application.
 
 ## Limits
