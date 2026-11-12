@@ -32,7 +32,6 @@ class Preview extends Component {
       if (event.key === 'Escape') { options.open = false; trigger.focus(); event.stopPropagation(); }
     });
     const controls = this.controls = options.createDiv({ cls: 'ov-options-panel' });
-    controls.createSpan({ cls: 'ov-readonly', text: 'Read only' });
     if (this.file.extension.toLowerCase() === 'csv') {
       this.select(controls, 'Encoding', [['auto', 'Auto encoding'], ['utf-8', 'UTF-8'], ['gb18030', 'GB18030 / GBK'], ['utf-16le', 'UTF-16 LE'], ['utf-16be', 'UTF-16 BE']], value => { this.options.encoding = value as Encoding; void this.refresh(); });
       this.select(controls, 'Delimiter', [['', 'Auto delimiter'], [',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']], value => { this.options.delimiter = value; void this.refresh(); });

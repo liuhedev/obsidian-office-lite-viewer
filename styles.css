@@ -1,7 +1,6 @@
 .office-lite-viewer { --ov-line: var(--background-modifier-border); display: flex; flex-direction: column; min-height: 0; padding: 0; color: var(--text-normal); font-family: var(--font-interface); font-size: var(--font-ui-small); }
 .ov-filebar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 16px 6px; }
 .ov-filename { font-weight: 600; overflow-wrap: anywhere; }
-.ov-readonly { color: var(--text-muted); border: 1px solid var(--ov-line); border-radius: 4px; padding: 1px 6px; font-size: var(--font-ui-smaller); margin-right: auto; }
 .ov-details { padding: 0 16px 10px; color: var(--text-muted); font-size: var(--font-ui-smaller); }
 .ov-grid { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 .ov-grid-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--ov-line); }
@@ -39,7 +38,6 @@
 .office-lite-viewer summary:hover { background: var(--background-modifier-hover); }
 .ov-options-panel, .ov-grid-options > .ov-header-toggle { position: absolute; right: 0; top: 100%; z-index: 10; display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--ov-line); border-radius: 6px; background: var(--background-primary); box-shadow: var(--shadow-s); }
 .ov-grid-options > .ov-header-toggle { flex-direction: row; align-items: center; }
-.ov-readonly { border: 0; padding: 0; }
 .ov-details { padding: 0; }
 .ov-grid-toolbar { padding: 6px 12px; gap: 6px; border-top: 0; }
 .office-lite-viewer .ov-search { box-shadow: none; background: transparent; border-color: transparent; }
@@ -61,7 +59,6 @@
 
 /* Compact, theme-aware preview actions. */
 .office-lite-viewer .ov-options-panel { width: 220px; min-width: 0; max-width: calc(100vw - 32px); max-height: min(70vh, 440px); overflow-y: auto; gap: 0; padding: 4px; font-size: 12px; border-radius: 7px; box-shadow: var(--shadow-l); }
-.ov-options-panel .ov-readonly { align-self: flex-start; margin: 2px 6px 4px; padding: 0 4px; border-radius: 4px; background: var(--background-secondary); font-size: var(--font-ui-smaller); }
 .office-lite-viewer .ov-action { display: flex; align-items: center; justify-content: flex-start; gap: 6px; width: 100%; min-height: 26px; height: auto; padding: 4px 6px; border: 0; border-radius: 5px; background: transparent; box-shadow: none; color: var(--text-normal); font: inherit; line-height: 1.3; text-align: left; cursor: pointer; }
 .office-lite-viewer .ov-action:hover, .office-lite-viewer .ov-action:focus-visible { background: var(--background-modifier-hover); }
 .ov-action-icon, .ov-action-chevron { display: flex; flex-shrink: 0; color: var(--text-muted); }
@@ -74,5 +71,4 @@
 .ov-options-panel .ov-header-toggle { padding: 6px; margin-top: 2px; border-top: 1px solid var(--ov-line); font-size: 12px; }
 .ov-options-panel select { width: 100%; margin-bottom: 4px; }
 
-.ov-options-panel .ov-readonly { font-size: 11px; }
 .ov-options-panel .ov-header-toggle input { width: 14px; height: 14px; }
