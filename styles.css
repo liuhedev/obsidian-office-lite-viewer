@@ -60,16 +60,19 @@
 .ov-html-frame { width: 100%; flex: 1; min-height: 240px; border: 0; background: white; }
 
 /* Compact, theme-aware preview actions. */
-.office-lite-viewer .ov-options-panel { width: 260px; min-width: 0; max-width: calc(100vw - 32px); max-height: min(70vh, 440px); overflow-y: auto; gap: 2px; padding: 6px; border-radius: 10px; box-shadow: var(--shadow-l); }
-.ov-options-panel .ov-readonly { align-self: flex-start; margin: 4px 8px 6px; padding: 2px 6px; border-radius: 4px; background: var(--background-secondary); font-size: var(--font-ui-smaller); }
-.office-lite-viewer .ov-action { display: flex; align-items: center; justify-content: flex-start; gap: 9px; width: 100%; min-height: 32px; height: auto; padding: 6px 8px; border: 0; border-radius: 5px; background: transparent; box-shadow: none; color: var(--text-normal); font: inherit; line-height: 1.4; text-align: left; cursor: pointer; }
+.office-lite-viewer .ov-options-panel { width: 220px; min-width: 0; max-width: calc(100vw - 32px); max-height: min(70vh, 440px); overflow-y: auto; gap: 0; padding: 4px; font-size: 12px; border-radius: 7px; box-shadow: var(--shadow-l); }
+.ov-options-panel .ov-readonly { align-self: flex-start; margin: 2px 6px 4px; padding: 0 4px; border-radius: 4px; background: var(--background-secondary); font-size: var(--font-ui-smaller); }
+.office-lite-viewer .ov-action { display: flex; align-items: center; justify-content: flex-start; gap: 6px; width: 100%; min-height: 26px; height: auto; padding: 4px 6px; border: 0; border-radius: 5px; background: transparent; box-shadow: none; color: var(--text-normal); font: inherit; line-height: 1.3; text-align: left; cursor: pointer; }
 .office-lite-viewer .ov-action:hover, .office-lite-viewer .ov-action:focus-visible { background: var(--background-modifier-hover); }
 .ov-action-icon, .ov-action-chevron { display: flex; flex-shrink: 0; color: var(--text-muted); }
-.ov-action-icon svg, .ov-action-chevron svg { width: 16px; height: 16px; }
+.ov-action-icon svg, .ov-action-chevron svg { width: 14px; height: 14px; }
 .ov-action-chevron { margin-left: auto; }
 .ov-copy-path[open] .ov-action-chevron { transform: rotate(90deg); }
-.ov-path-choices { margin: 2px 0 4px 16px; padding-left: 6px; border-left: 1px solid var(--ov-line); }
-.ov-options-panel .ov-details { margin: 6px 8px 2px; padding-top: 8px; border-top: 1px solid var(--ov-line); font-size: var(--font-ui-smaller); line-height: 1.5; overflow-wrap: anywhere; }
+.ov-path-choices { margin: 0 0 2px 12px; padding-left: 4px; border-left: 1px solid var(--ov-line); }
+.ov-options-panel .ov-details { margin: 4px 6px 2px; padding-top: 5px; border-top: 1px solid var(--ov-line); font-size: 11px; line-height: 1.3; overflow-wrap: anywhere; }
 .ov-options-panel .ov-details:empty { display: none; }
-.ov-options-panel .ov-header-toggle { padding: 8px; margin-top: 4px; border-top: 1px solid var(--ov-line); font-size: var(--font-ui-small); }
+.ov-options-panel .ov-header-toggle { padding: 6px; margin-top: 2px; border-top: 1px solid var(--ov-line); font-size: 12px; }
 .ov-options-panel select { width: 100%; margin-bottom: 4px; }
+
+.ov-options-panel .ov-readonly { font-size: 11px; }
+.ov-options-panel .ov-header-toggle input { width: 14px; height: 14px; }

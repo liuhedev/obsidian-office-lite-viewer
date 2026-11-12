@@ -38,6 +38,7 @@ class Preview extends Component {
       this.select(controls, 'Delimiter', [['', 'Auto delimiter'], [',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']], value => { this.options.delimiter = value; void this.refresh(); });
     }
     const paths = controls.createEl('details', { cls: 'ov-copy-path' });
+    this.registerDomEvent(options, 'toggle', () => { if (!options.open) paths.open = false; });
     const copy = paths.createEl('summary', { cls: 'ov-action' });
     setIcon(copy.createSpan({ cls: 'ov-action-icon' }), 'copy');
     copy.createSpan({ text: 'Copy path' });
