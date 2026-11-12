@@ -1,4 +1,4 @@
-import { Component, FileView, FuzzySuggestModal, MarkdownRenderChild, Notice, Platform, Plugin, TFile, normalizePath, type App, type WorkspaceLeaf } from 'obsidian';
+import { Component, FileSystemAdapter, FileView, FuzzySuggestModal, MarkdownRenderChild, Notice, Platform, Plugin, TFile, normalizePath, setIcon, type App, type WorkspaceLeaf } from 'obsidian';
 import { MAX_BYTES, type Encoding, type ParseOptions } from './model';
 import { DocumentReader } from './reader';
 import { SpreadsheetGrid } from './grid';
@@ -24,21 +24,39 @@ class Preview extends Component {
     const bar = this.host.createDiv({ cls: 'ov-filebar' });
     bar.createSpan({ cls: 'ov-filename', text: this.file.name });
     const options = bar.createEl('details', { cls: 'ov-options' });
-    options.createEl('summary', { text: '⋯', attr: { 'aria-label': 'Preview options', title: 'Preview options' } });
+    const trigger = options.createEl('summary', { text: '⋯', attr: { 'aria-label': 'Preview options', title: 'Preview options' } });
+    this.registerDomEvent(this.host.ownerDocument, 'pointerdown', event => {
+      if (!event.composedPath().includes(options)) options.open = false;
+    });
+    this.registerDomEvent(options, 'keydown', event => {
+      if (event.key === 'Escape') { options.open = false; trigger.focus(); event.stopPropagation(); }
+    });
     const controls = this.controls = options.createDiv({ cls: 'ov-options-panel' });
     controls.createSpan({ cls: 'ov-readonly', text: 'Read only' });
     if (this.file.extension.toLowerCase() === 'csv') {
       this.select(controls, 'Encoding', [['auto', 'Auto encoding'], ['utf-8', 'UTF-8'], ['gb18030', 'GB18030 / GBK'], ['utf-16le', 'UTF-16 LE'], ['utf-16be', 'UTF-16 BE']], value => { this.options.encoding = value as Encoding; void this.refresh(); });
       this.select(controls, 'Delimiter', [['', 'Auto delimiter'], [',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']], value => { this.options.delimiter = value; void this.refresh(); });
     }
-    const reload = controls.createEl('button', { text: 'Reload', attr: { title: 'Reload from disk' } });
-    this.registerDomEvent(reload, 'click', () => void this.refresh());
+    const paths = controls.createEl('details', { cls: 'ov-copy-path' });
+    const copy = paths.createEl('summary', { cls: 'ov-action' });
+    setIcon(copy.createSpan({ cls: 'ov-action-icon' }), 'copy');
+    copy.createSpan({ text: 'Copy path' });
+    setIcon(copy.createSpan({ cls: 'ov-action-chevron' }), 'chevron-right');
+    const choices = paths.createDiv({ cls: 'ov-path-choices' });
+    const copyPath = async (value: string) => {
+      try { await navigator.clipboard.writeText(value); options.open = false; new Notice('Path copied'); }
+      catch { new Notice('Unable to copy the path to the clipboard.'); }
+    };
+    this.action(choices, 'Obsidian URL', 'link', () => copyPath(`obsidian://open?vault=${encodeURIComponent(this.app.vault.getName())}&file=${encodeURIComponent(this.file.path)}`));
+    this.action(choices, 'Vault-relative path', 'folder', () => copyPath(this.file.path));
+    const adapter = this.app.vault.adapter;
+    if (adapter instanceof FileSystemAdapter) this.action(choices, 'Absolute path', 'hard-drive', () => copyPath(adapter.getFullPath(this.file.path)));
+    this.action(controls, 'Reload', 'refresh-cw', () => { options.open = false; void this.refresh(); });
     const systemApp = this.app as App & { openWithDefaultApp?: (path: string) => Promise<void> | void };
     if (Platform.isDesktopApp && typeof systemApp.openWithDefaultApp === 'function') {
-      const open = controls.createEl('button', { text: 'Open in default app' });
-      this.registerDomEvent(open, 'click', async () => {
+      const open = this.action(controls, 'Open in default app', 'external-link', async () => {
         open.disabled = true;
-        try { await systemApp.openWithDefaultApp?.(this.file.path); }
+        try { await systemApp.openWithDefaultApp?.(this.file.path); options.open = false; }
         catch { new Notice('Unable to open this file. Check that a default application is configured for this file type.'); }
         finally { open.disabled = false; }
       });
@@ -47,6 +65,13 @@ class Preview extends Component {
     this.gridHost = this.host.createDiv({ cls: 'ov-grid' });
     this.registerEvent(this.app.vault.on('modify', file => { if (file === this.file) void this.refresh(); }));
     void this.refresh();
+  }
+  private action(host: HTMLElement, text: string, icon: string, callback: () => void | Promise<void>): HTMLButtonElement {
+    const button = host.createEl('button', { cls: 'ov-action', attr: { type: 'button' } });
+    const symbol = button.createSpan({ cls: 'ov-action-icon', attr: { 'aria-hidden': 'true' } });
+    setIcon(symbol, icon); button.createSpan({ text });
+    this.registerDomEvent(button, 'click', () => void callback());
+    return button;
   }
   private select(host: HTMLElement, label: string, choices: string[][], change: (value: string) => void): void {
     const select = host.createEl('select', { attr: { 'aria-label': label } });

@@ -24,7 +24,7 @@ data/budget.xlsx
 ```
 ````
 
-桌面端可通过 **⋯ → Open in default app** 使用系统默认应用打开文件。
+在 **⋯ → Copy path** 中复制 Obsidian URL、库内相对路径；桌面端还可复制绝对路径。菜单支持 Esc 或点击外部关闭。桌面端可通过 **⋯ → Open in default app** 使用系统默认应用打开文件。
 
 ## 限制
 

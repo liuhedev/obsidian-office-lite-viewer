@@ -24,7 +24,7 @@ data/budget.xlsx
 ```
 ````
 
-On desktop, choose **⋯ → Open in default app** to open the file with its system-associated application.
+Use **⋯ → Copy path** for an Obsidian URL or vault-relative path; desktop also offers the absolute path. The compact options panel closes with Escape or a click outside. Choose **⋯ → Open in default app** on desktop to open the file with its system-associated application.
 
 ## Limits
 
