@@ -1,7 +1,7 @@
 {
   "id": "office-lite-viewer",
   "name": "Office Lite Viewer",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "minAppVersion": "1.5.0",
   "description": "Preview CSV, XLS/XLSX, DOC/DOCX, JSON and HTML files locally.",
   "author": "liuhedev",
