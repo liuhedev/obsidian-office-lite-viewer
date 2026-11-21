@@ -3,6 +3,8 @@ import { compoundStream, doc, docx, isCompound, readCompound } from './word';
 import * as XLSX from 'xlsx';
 import { MAX_BYTES, MAX_CELLS, MAX_COLS, MAX_ROWS, MAX_SHEETS, type DocumentData, type ParseOptions, type ParseReply, type Sheet } from './model';
 
+const CSV_DELIMITER_NAMES = new Map([[',', 'Comma'], ['\t', 'Tab'], [';', 'Semicolon'], ['|', 'Pipe']]);
+
 function decode(bytes: Uint8Array, encoding: ParseOptions['encoding']): { text: string; label: string } {
   let label: string = encoding;
   if (encoding === 'auto') {
@@ -32,8 +34,9 @@ function csv(bytes: Uint8Array, options: ParseOptions): DocumentData {
   if (rows.some(row => row.length > MAX_COLS)) warnings.push(`Preview limited to ${MAX_COLS} columns.`);
   const rowLimit = Math.min(MAX_ROWS, Math.floor(MAX_CELLS / Math.max(columns, 1)));
   if (rows.length > rowLimit && rowLimit < MAX_ROWS) warnings.push(`Preview limited to ${MAX_CELLS.toLocaleString()} cells.`);
+  const delimiter = result.meta.delimiter || ',';
   return { sheets: [{ name: 'CSV', rows: rows.slice(0, rowLimit).map(row => row.slice(0, columns)), columns, warnings }],
-    details: `${label.toUpperCase()} · ${result.meta.delimiter === '\t' ? 'Tab' : result.meta.delimiter || ','} delimiter`, warnings: [] };
+    details: `${label.toUpperCase()} · ${CSV_DELIMITER_NAMES.get(delimiter) ?? delimiter} delimiter`, warnings: [] };
 }
 
 function spreadsheet(bytes: Uint8Array, extension: string): DocumentData {
