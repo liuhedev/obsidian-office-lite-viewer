@@ -10,13 +10,13 @@
 .ov-notes { padding: 8px 16px; color: var(--text-warning); background: var(--background-secondary); }
 .ov-notes[hidden] { display: none; }
 .ov-table-area { flex: 1; min-height: 100px; overflow: auto; overscroll-behavior: contain; border-top: 1px solid var(--ov-line); }
-.office-lite-viewer .ov-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; margin: 0; font-size: var(--font-ui-small); }
+.office-lite-viewer .ov-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 0; margin: 0; font-size: var(--font-ui-small); }
 .office-lite-viewer .ov-table :is(td, th) { padding: 7px 12px; border: 0; border-right: 1px solid var(--ov-line); border-bottom: 1px solid var(--ov-line); max-width: 360px; min-width: 100px; text-align: left; vertical-align: top; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
 .office-lite-viewer .ov-table thead th { position: sticky; top: 0; z-index: 2; background: var(--background-secondary); padding: 0; }
 .office-lite-viewer .ov-table .ov-row-number { position: sticky; left: 0; min-width: 46px; max-width: 70px; width: 46px; text-align: right; color: var(--text-faint); background: var(--background-primary); font-weight: 400; font-variant-numeric: tabular-nums; z-index: 1; }
 .office-lite-viewer .ov-table thead .ov-row-number { z-index: 3; padding: 7px 12px; background: var(--background-secondary); }
 .ov-table tbody tr:hover td { background: var(--background-primary-alt); }
-.office-lite-viewer button.ov-sort { display: block; width: 100%; height: auto; min-height: 35px; padding: 7px 12px; border: 0; border-radius: 0; box-shadow: none; background: transparent; text-align: left; color: var(--text-normal); font-weight: 600; white-space: pre-wrap; }
+.office-lite-viewer button.ov-sort { display: block; width: 100%; height: auto; min-height: 35px; padding: 7px 12px; border: 0; border-radius: 0; box-shadow: none; background: transparent; text-align: left; color: var(--text-normal); font-weight: 600; white-space: pre-wrap; overflow-wrap: anywhere; }
 .office-lite-viewer button.ov-sort:hover { background: var(--background-modifier-hover); }
 .ov-footer { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 8px 16px; border-top: 1px solid var(--ov-line); color: var(--text-muted); }
 .ov-paging { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; }
